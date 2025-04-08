@@ -7,4 +7,9 @@ public class jugador {
         mano = new ArrayList<>();
     }
 
+
+    public void insertarPeses(Peses p) {
+        mano.add(p);
+    }
+
 }
