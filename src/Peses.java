@@ -6,6 +6,7 @@ public class Peses {
     private int valor2;
     private boolean adalt = true;
     private boolean abaix = true;
+    private boolean girada = false;
     public Peses(int valor1, int valor2) {
          this.valor1 = valor1;
          this.valor2 = valor2;
@@ -13,10 +14,10 @@ public class Peses {
 
     @Override
     public String toString() {
-        return "[" + valor1 + " | " + valor2 + "]";
-    }
-    public String toStringGirat() {
-        return "[" + valor2 + " | " + valor1 + "]";
+        if (girada) {
+            return "[" + valor2 + " | " + valor1 + "]";
+        } else {
+            return "[" + valor1 + " | " + valor2 + "]";}
     }
 
     public int getValor1() {
@@ -29,3 +30,4 @@ public class Peses {
     }
 
 }
+
