@@ -1,12 +1,21 @@
 import Exceptions.InvalidPosicion;
-
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Joc {
 
     private ArrayList<Peses> totalPeses = new ArrayList<>();
     private ArrayList<Peses> tablero = new ArrayList<>();
+    private Scanner sc = new Scanner(System.in);
+    protected Sortides sort = new Sortides();
+
+    public Joc(){
+
+    }
+    public  void start(){
+        sort.imprimirTexte("hola");
+    }
 
     public void generarPeses(){
         for (int i = 0; i <= 6; i++){
@@ -50,12 +59,11 @@ public class Joc {
 
     private int esPesaValidaD(Peses p) {
         if (tablero.isEmpty()) {
-            return 1; // Si el tablero está vacío, puedes colocar cualquier pieza
+            return 1;
         }
 
         Peses primera = tablero.get(0);
 
-        // Compara los extremos del tablero con los lados de la pieza
         if (p.getValor1() == primera.getValor1()) {
                 return 1;
                 } else if (p.getValor2() == primera.getValor1()) {
@@ -66,12 +74,11 @@ public class Joc {
 
     private int esPesaValidaE(Peses p) {
         if (tablero.isEmpty()) {
-            return 1; // Si el tablero está vacío, puedes colocar cualquier pieza
+            return 1;
         }
 
         Peses ultima = tablero.get(tablero.size() - 1);
 
-        // Compara los extremos del tablero con los lados de la pieza
         if (p.getValor1() == ultima.getValor2()) {
             return 1;
         } else if (p.getValor2() == ultima.getValor2()) {
@@ -79,5 +86,45 @@ public class Joc {
         }
         return 0;
     }
+
+
+    public void startJoc(){
+    sort.imprimirTexte(" Benvolguts al Joc del Domino \n En aquest joc temim 7 modalitats de joc , heuras de triarne una per començar a jugar.");
+    sort.imprimirTexte(" 1. Domino Espanyol \n 2. Domino Mexicà \n 3. Domino Llatí \n 4. Domino Colombiá \n 5. Domino Xilè \n 6. Domino Veneçolà \n 7. Domino Ponce");
+        switch (sc.nextLine()){
+            case "1":
+                sort.imprimirTexte("Has elejit Domino Espanyol are començarem el joc");
+                new Espanyol().start();
+                break;
+            case "2":
+                sort.imprimirTexte("Has elejit Domino Mexicà are començarem el joc");
+                new Mexica().start();
+                break;
+            case "3":
+                sort.imprimirTexte("Has elejit Domino Llatí are començarem el joc");
+                new Llati().start();
+                break;
+            case "4":
+                sort.imprimirTexte("Has elejit Domino Colombià are començarem el joc");
+                new Colombia().start();
+                break;
+            case "5":
+                sort.imprimirTexte("Has elejit Domino Xilè are començarem el joc");
+                new Xile().start();
+                break;
+            case "6":
+                sort.imprimirTexte("Has elejit Domino Veneçolà are començarem el joc");
+                new Venesola();
+                break;
+            case "7":
+                sort.imprimirTexte("Has elejit Domino Ponce are començarem el joc");
+                new Ponce();
+                break;
+            default:
+                sort.imprimirTexte("Has elejit Un valor no valid");
+                break;
+        }
+    }
+
 
 }
