@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 public class Peses {
 
     private int valor1;
@@ -29,5 +27,8 @@ public class Peses {
         return valor2;
     }
 
+    public Peses setGirada(boolean a){
+        this.girada = a;
+        return null;
+    }
 }
-
