@@ -50,8 +50,8 @@ public class Joc {
 
     private void cDerrere(Peses p){
         if (esPesaValidaE(p) == 1) {
-            tablero.add( 0 ,p); } else if (esPesaValidaE(p) == 2) {
-            tablero.add( 0 ,p.setGirada(true));
+            tablero.add(p); } else if (esPesaValidaE(p) == 2) {
+            tablero.add(p.setGirada(true));
         } else if (esPesaValidaE(p) == 0) {
             new InvalidPosicion("La Fitca no es pot colocar alla ");
         }

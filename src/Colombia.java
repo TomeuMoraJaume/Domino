@@ -1,8 +1,7 @@
 public class Colombia extends Joc{
 
     public Colombia(){
-        generarPeses();
-        imprimirTablero();
+
     }
     @Override
     public void start() {
