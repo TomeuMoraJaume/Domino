@@ -127,4 +127,12 @@ public class Joc {
     }
 
 
+    public void generarJugadors(){
+        sort.imprimirTexte("Inseresqui cuants de Jugadors sereu: ");
+        int jugadors = sc.nextInt();
+        for (int i = 0; i < tablero.size(); i++) {
+
+        }
+    }
+
 }
