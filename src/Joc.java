@@ -9,7 +9,7 @@ public class Joc {
     private ArrayList<Peses> tablero = new ArrayList<>();
     private Scanner sc = new Scanner(System.in);
     protected Sortides sort = new Sortides();
-
+    private ArrayList<jugador> listaJugadors = new ArrayList<>();
     public Joc(){
 
     }
@@ -130,9 +130,21 @@ public class Joc {
     public void generarJugadors(){
         sort.imprimirTexte("Inseresqui cuants de Jugadors sereu: ");
         int jugadors = sc.nextInt();
-        for (int i = 0; i < tablero.size(); i++) {
+        sc.nextLine();
 
+        for (int i = 0; i < jugadors; i++) {
+            sort.imprimirTexte("Ingresi el nom del jugador " + i + ": ");
+            String nombre = sc.nextLine();
+
+            jugador idJugador = new jugador();
+            idJugador.setId(i);
+            idJugador.setNombre(nombre);
+
+            listaJugadors.add(idJugador);
         }
     }
 
+    public void generarParelles(){
+
+    }
 }
