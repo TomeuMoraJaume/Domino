@@ -23,9 +23,4 @@ public class jugador {
     private String nombre;
 
 
-
-    public void insertarPeses(Peses p) {
-        mano.add(p);
-    }
-
 }

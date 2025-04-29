@@ -10,6 +10,7 @@ public class Joc {
     private Scanner sc = new Scanner(System.in);
     protected Sortides sort = new Sortides();
     private ArrayList<jugador> listaJugadors = new ArrayList<>();
+    private ArrayList<jugador> lisytaGrups = new ArrayList<>();
     public Joc(){
 
     }
@@ -145,6 +146,17 @@ public class Joc {
     }
 
     public void generarParelles(){
+        sort.imprimirTexte("Cuants de grups sareu");
+        int grups = sc.nextInt();
+        if (listaJugadors.size()/grups !=0 ) {
+            sort.imprimirTexte("Imposible generar aquest numero de grups , tens menys participants dels que necesites per formar  " + grups + " grups. ");
 
+        } else {
+            for (int i = 0; i < listaJugadors.size(); i++) {
+                Random r = new Random(listaJugadors.size());
+                lisytaGrups.add(listaJugadors.get(i));
+                listaJugadors.remove(i);
+            }
+        }
     }
 }
