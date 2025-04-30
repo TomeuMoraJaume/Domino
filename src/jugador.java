@@ -2,6 +2,8 @@ import java.util.ArrayList;
 
 public class jugador {
     ArrayList<Peses> mano;
+    private int id;
+    private String nombre;
 
     public int getId() {
         return id;
@@ -18,9 +20,6 @@ public class jugador {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
-    private int id;
-    private String nombre;
 
 
 }
