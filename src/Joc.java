@@ -31,13 +31,23 @@ public class Joc {
     }
 
     public void generarMans(){
-        for (int i = 0; i <totalPeses.size(); i++){
-            Random r = new Random();
-            int rPosicio = r.nextInt(totalPeses.size());
 
+        for (int i = 0; i < listaJugadors.size(); i++) {
+            for (int y = 0; y < 7 ; y++){
+                Random r = new Random();
+                int rPosicio = r.nextInt(totalPeses.size());
+                listaJugadors.get(i).setMano(totalPeses.get(rPosicio));
+                totalPeses.remove(rPosicio);
+            }
         }
     }
 
+
+    public void imprimirPersones(){
+        for (int i = 0; i < listaJugadors.size(); i++) {
+            listaJugadors.get(i).mostrar();
+        }
+    }
 
     private void cDevant(Peses p){
         if (esPesaValidaD(p) == 1) {
@@ -91,11 +101,12 @@ public class Joc {
 
     public void startJoc(){
     sort.imprimirTexte(" Benvolguts al Joc del Domino \n En aquest joc temim 7 modalitats de joc , heuras de triarne una per començar a jugar.");
-    sort.imprimirTexte(" 1. Domino Espanyol \n 2. Domino Mexicà \n 3. Domino Llatí \n 4. Domino Colombiá \n 5. Domino Xilè \n 6. Domino Veneçolà \n 7. Domino Ponce");
+    sort.imprimirTexte(" 1. Domino Standart \n 2. Domino Mexicà \n 3. Domino Llatí \n 4. Domino Colombiá \n 5. Domino Xilè \n 6. Domino Veneçolà \n 7. Domino Ponce");
         switch (sc.nextLine()){
             case "1":
-                sort.imprimirTexte("Has elejit Domino Espanyol are començarem el joc");
-                new Espanyol().start();
+                    start();
+                    generarJugadors();
+                    generarMans();
                 break;
             case "2":
                 sort.imprimirTexte("Has elejit Domino Mexicà are començarem el joc");

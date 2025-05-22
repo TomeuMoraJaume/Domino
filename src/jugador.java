@@ -21,5 +21,11 @@ public class jugador {
         this.nombre = nombre;
     }
 
+    public void setMano(Peses p){
+        mano.add(p);
+    }
 
+    public void mostrar(){
+        System.out.println(this.mano);
+    }
 }
