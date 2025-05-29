@@ -28,4 +28,7 @@ public class jugador {
     public void mostrar() {
         System.out.println(this.mano);
     }
+    public ArrayList<Peses> getMano(){
+        return mano;
+    }
 }

@@ -12,7 +12,6 @@ public class Joc {
     private ArrayList<jugador> listaJugadors = new ArrayList<>();
     private ArrayList<jugador> lisytaGrups = new ArrayList<>();
     public Joc(){
-
     }
     public  void start(){
         sort.imprimirTexte("hola");
@@ -52,7 +51,7 @@ public class Joc {
         }
     }
 
-    private void cDevant(Peses p){
+    private void cDerrere(Peses p){
         if (esPesaValidaD(p) == 1) {
         tablero.add( 0 ,p); } else if (esPesaValidaD(p) == 2) {
             tablero.add( 0 ,p.setGirada(true));
@@ -62,7 +61,7 @@ public class Joc {
     }
 
 
-    private void cDerrere(Peses p){
+    private void cDevant(Peses p){
         if (esPesaValidaE(p) == 1) {
             tablero.add(p); } else if (esPesaValidaE(p) == 2) {
             tablero.add(p.setGirada(true));
@@ -71,7 +70,7 @@ public class Joc {
         }
     }
 
-    private int esPesaValidaD(Peses p) {
+    private int esPesaValidaE(Peses p) {
         if (tablero.isEmpty()) {
             return 1;
         }
@@ -86,7 +85,7 @@ public class Joc {
         return 0;
     }
 
-    private int esPesaValidaE(Peses p) {
+    private int esPesaValidaD(Peses p) {
         if (tablero.isEmpty()) {
             return 1;
         }
@@ -101,6 +100,17 @@ public class Joc {
         return 0;
     }
 
+    private int esPotColocar(Peses p) {
+        if (tablero.isEmpty()) {
+            return 0;
+        }
+        if(esPesaValidaD(p) == 1 || esPesaValidaE(p) == 1) {
+            return 1;
+        } else if (esPesaValidaD(p) == 2 || esPesaValidaE(p) == 2) {
+            return 2;
+        }
+        return 0;
+    }
 
     public void startJoc(){
     sort.imprimirTexte(" Benvolguts al Joc del Domino \n En aquest joc temim 7 modalitats de joc , heuras de triarne una per començar a jugar.");
@@ -178,4 +188,14 @@ public class Joc {
             }
         }
     }
+
+    public void torns(){
+        boolean acabat = false;
+        while (!acabat) {
+
+
+
+        }
+    }
+
 }
