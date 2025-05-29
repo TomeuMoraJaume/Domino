@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class jugador {
-    ArrayList<Peses> mano;
+    private ArrayList<Peses> mano = new ArrayList<>();
     private int id;
     private String nombre;
 
@@ -22,10 +22,10 @@ public class jugador {
     }
 
     public void setMano(Peses p){
-        mano.add(p);
+        this.mano.add(p);
     }
 
-    public void mostrar(){
+    public void mostrar() {
         System.out.println(this.mano);
     }
 }

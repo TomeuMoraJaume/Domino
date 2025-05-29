@@ -33,10 +33,13 @@ public class Joc {
     public void generarMans(){
 
         for (int i = 0; i < listaJugadors.size(); i++) {
+            jugador jugadorActual = listaJugadors.get(i);
             for (int y = 0; y < 7 ; y++){
                 Random r = new Random();
-                int rPosicio = r.nextInt(totalPeses.size());
-                listaJugadors.get(i).setMano(totalPeses.get(rPosicio));
+                int lon = totalPeses.size();
+                int rPosicio = r.nextInt(lon);
+                Peses pesaActual = totalPeses.get(rPosicio);
+                jugadorActual.setMano(pesaActual);
                 totalPeses.remove(rPosicio);
             }
         }
@@ -105,8 +108,13 @@ public class Joc {
         switch (sc.nextLine()){
             case "1":
                     start();
+                    generarPeses();
                     generarJugadors();
+                for (int i = 0; i < listaJugadors.size(); i++) {
+                    System.out.println(listaJugadors.get(i).getNombre());
+                }
                     generarMans();
+                imprimirPersones();
                 break;
             case "2":
                 sort.imprimirTexte("Has elejit Domino Mexicà are començarem el joc");

@@ -5,6 +5,7 @@ public class Peses {
     private boolean adalt = true;
     private boolean abaix = true;
     private boolean girada = false;
+
     public Peses(int valor1, int valor2) {
          this.valor1 = valor1;
          this.valor2 = valor2;
@@ -21,8 +22,6 @@ public class Peses {
     public int getValor1() {
         return valor1;
     }
-
-
     public int getValor2() {
         return valor2;
     }
