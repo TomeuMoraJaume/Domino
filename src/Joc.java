@@ -158,10 +158,13 @@ public class Joc {
 
 
     public void generarJugadors(){
-        sort.imprimirTexte("Inseresqui cuants de Jugadors sereu: ");
+        sort.imprimirTexte("Inseresqui cuants de Jugadors sereu (Maxim 4): ");
         int jugadors = sc.nextInt();
         sc.nextLine();
+        if (jugadors > 4 ){
+            System.out.println("Per Respectar les normes del joc nomes podeu jugar 4 persones");
 
+        } else {
         for (int i = 0; i < jugadors; i++) {
             sort.imprimirTexte("Ingresi el nom del jugador " + i + ": ");
             String nombre = sc.nextLine();
@@ -171,7 +174,7 @@ public class Joc {
             idJugador.setNombre(nombre);
 
             listaJugadors.add(idJugador);
-        }
+        }}
     }
 
     public void generarParelles(){
