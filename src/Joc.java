@@ -131,15 +131,18 @@ public class Joc {
 
     private int esPotColocar(Peses p) {
         if (tablero.isEmpty()) {
-            return 0;
+            return 0; // se puede colocar en cualquier lado
         }
-        if(esPesaValidaD(p) == 1 || esPesaValidaE(p) == 1) {
-            return 1;
-        } else if (esPesaValidaD(p) == 2 || esPesaValidaE(p) == 2) {
-            return 2;
-        }
-        return 0;
+
+        int dreta = esPesaValidaD(p);
+        int esquerra = esPesaValidaE(p);
+
+        if (dreta > 0 && esquerra > 0) return 3; // se puede colocar en ambos
+        else if (dreta > 0) return 1; // derecha
+        else if (esquerra > 0) return 2; // izquierda
+        return 0; // no se puede colocar
     }
+
 
     public void startJoc(){
     sort.imprimirTexte(" Benvolguts al Joc del Domino \n En aquest joc temim 7 modalitats de joc , heuras de triarne una per començar a jugar.");
@@ -277,18 +280,37 @@ public class Joc {
                 sc.nextLine();
 
                 if (index < j.getMano().size()) {
-                    Peses p = j.getMano().get(index);
-                    int pot = esPotColocar(p);
+                    Peses pesaSeleccionada = j.getMano().get(index);
+                    int potColocar = esPotColocar(pesaSeleccionada);
 
-                    if (pot == 1 || pot == 2) {
-                        if (esPesaValidaD(p) > 0) {
-                            cDerrere(p);
-                        } else {
-                            cDevant(p);
-                        }
-                        j.removePesa(p);
-                        haJugat = true;
-                        System.out.println(j.getNombre() + " ha col·locat: " + p);
+                    switch (potColocar) {
+                        case 1:
+                            cDerrere(pesaSeleccionada);
+                            j.removePesa(pesaSeleccionada);
+                            haJugat = true;
+                            System.out.println(j.getNombre() + " ha col·locat: " + pesaSeleccionada);
+                            break;
+                        case 2:
+                            cDevant(pesaSeleccionada);
+                            j.removePesa(pesaSeleccionada);
+                            haJugat = true;
+                            System.out.println(j.getNombre() + " ha col·locat: " + pesaSeleccionada);
+                            break;
+                        case 3:
+                            System.out.println("Pots col·locar la fitxa a esquerra o dreta. Escriu 'E' o 'D':");
+                            String costat = sc.nextLine();
+                            if (costat.equalsIgnoreCase("E")) {
+                                cDevant(pesaSeleccionada);
+                            } else {
+                                cDerrere(pesaSeleccionada);
+                            }
+                            j.removePesa(pesaSeleccionada);
+                            haJugat = true;
+                            System.out.println(j.getNombre() + " ha col·locat: " + pesaSeleccionada);
+                            break;
+                        default:
+                            System.out.println("La fitxa no es pot col·locar.");
+                            break;
                     }
                 }
 
@@ -301,8 +323,6 @@ public class Joc {
                         System.out.println(j.getNombre() + " roba una fitxa.");
                         Peses nova = totalPeses.remove(0);
                         j.setMano(nova);
-
-                        // Torn s'acaba després de robar
                         System.out.println(j.getNombre() + " ha robat: " + nova + ". No pot jugar-la aquest torn.");
                         break;
                     }
@@ -317,6 +337,5 @@ public class Joc {
             }
         }
     }
-
 
 }
