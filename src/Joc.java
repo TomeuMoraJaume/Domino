@@ -22,29 +22,45 @@ public class Joc {
 
         if (primer != -1) {
             jugador jugadorInicial = listaJugadors.get(primer);
-
-            // Buscar el doble más alto y colocarlo
             ArrayList<Peses> mano = jugadorInicial.getMano();
+
+            // Buscar el doble más alto en su mano
+            Peses millorDoble = null;
             for (Peses p : mano) {
                 if (p.getValor1() == p.getValor2()) {
-                    tablero.add(p); // colocar al centro
-                    jugadorInicial.removePesa(p);
-                    System.out.println(jugadorInicial.getNombre() + " comença i col·loca automàticament el " + p);
-                    break;
+                    if (millorDoble == null || p.getValor1() > millorDoble.getValor1()) {
+                        millorDoble = p;
+                    }
                 }
             }
 
-            // Generar el orden de turnos (jugador que inició va al final)
-            torns(); // ya coloca el jugador con doble primero
+            // Colocar la ficha en el tablero y quitarla de la mano
+            if (millorDoble != null) {
+                tablero.add(millorDoble);
+                jugadorInicial.removePesa(millorDoble);
+                System.out.println(jugadorInicial.getNombre() + " comença i col·loca automàticament el " + millorDoble);
+            }
 
-            // Mover el jugador que colocó la ficha al final de la lista de turnos
-            jugador iniciador = torns.remove(0);
-            torns.add(iniciador);
+            // Generar orden de turnos (jugador que inició va primero, pero no vuelve a jugar inmediatamente)
+            torns.clear();
+            for (int i = 0; i < listaJugadors.size(); i++) {
+                torns.add(listaJugadors.get(i));
+            }
+
+            // Rotar turnos: el siguiente al jugador inicial empieza
+            while (!torns.get(0).equals(jugadorInicial)) {
+                jugador j = torns.remove(0);
+                torns.add(j);
+            }
+            torns.remove(0); // eliminar al jugador que ya jugó
+            torns.add(jugadorInicial); // añadirlo al final del turno
         }
 
         // Empieza la partida
         jugar();
     }
+
+
 
 
 
@@ -151,14 +167,10 @@ public class Joc {
     sort.imprimirTexte(" 1. Domino Standart \n 2. Domino Mexicà \n 3. Domino Llatí \n 4. Domino Colombiá \n 5. Domino Xilè \n 6. Domino Veneçolà \n 7. Domino Ponce");
         switch (sc.nextLine()){
             case "1":
-                    start();
-                    generarPeses();
-                    generarJugadors();
-                for (int i = 0; i < listaJugadors.size(); i++) {
-                    System.out.println(listaJugadors.get(i).getNombre());
-                }
-                    generarMans();
-                torns();
+                start();                // ← Inicializa estructuras (aún vacío)
+                generarPeses();         // ← Crea todas las fichas
+                generarJugadors();      // ← Crea los jugadores
+                generarMans();          // ← Reparte fichas aleatoriamente a los jugadores
                 iniciarPartida();
                 break;
             case "2":
@@ -229,25 +241,6 @@ public class Joc {
         }
     }
 
-    public void torns() {
-        int pesadoblle6 = cercarJugadorambMajorDoblePessa(); // índice del jugador con el doble más alto
-        if (pesadoblle6 != -1) {
-            // Añadir primero el jugador con el doble más alto
-            torns.add(listaJugadors.get(pesadoblle6));
-            listaJugadors.remove(pesadoblle6);
-        }
-
-        // Añadir el resto de jugadores en el orden que quedaron
-        for (jugador j : listaJugadors) {
-            torns.add(j);
-        }
-
-//        // Mostrar el orden de turnos
-//        for (jugador jugador : torns) {
-//            jugador.mostrar();
-//        }
-    }
-
 
     private int cercarJugadorambMajorDoblePessa() {
         int valorMaxTrobat = -1;
@@ -286,19 +279,19 @@ public class Joc {
                     int potColocar = esPotColocar(pesaSeleccionada);
 
                     switch (potColocar) {
-                        case 1:
+                        case 1: // només pot a la dreta
                             cDerrere(pesaSeleccionada);
                             j.removePesa(pesaSeleccionada);
                             haJugat = true;
-                            System.out.println(j.getNombre() + " ha col·locat: " + pesaSeleccionada);
+                            System.out.println(j.getNombre() + " ha col·locat a la dreta: " + pesaSeleccionada);
                             break;
-                        case 2:
+                        case 2: // només pot a l'esquerra
                             cDevant(pesaSeleccionada);
                             j.removePesa(pesaSeleccionada);
                             haJugat = true;
-                            System.out.println(j.getNombre() + " ha col·locat: " + pesaSeleccionada);
+                            System.out.println(j.getNombre() + " ha col·locat a l'esquerra: " + pesaSeleccionada);
                             break;
-                        case 3:
+                        case 3: // pot col·locar als dos costats
                             System.out.println("Pots col·locar la fitxa a esquerra o dreta. Escriu 'E' o 'D':");
                             String costat = sc.nextLine();
                             if (costat.equalsIgnoreCase("E")) {
@@ -330,7 +323,7 @@ public class Joc {
                     }
                 }
 
-                // Verifica si el jugador ha ganado
+                // Verifica si el jugador ha guanyat
                 if (j.getMano().isEmpty()) {
                     System.out.println("\n🏆 El jugador " + j.getNombre() + " ha guanyat!");
                     jocAcabat = true;
@@ -339,5 +332,4 @@ public class Joc {
             }
         }
     }
-
 }

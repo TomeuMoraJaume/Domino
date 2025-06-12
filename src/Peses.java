@@ -14,7 +14,7 @@ public class Peses {
     @Override
     public String toString() {
         if (girada) {
-            return "[" + valor2 + " | " + valor1 + "]";
+            return "[" + valor1 + " | " + valor2 + "]";
         } else {
             return "[" + valor1 + " | " + valor2 + "]";}
     }
@@ -26,8 +26,13 @@ public class Peses {
         return valor2;
     }
 
-    public Peses setGirada(boolean a){
-        this.girada = a;
-        return null;
+    public void setGirada(boolean girada) {
+        if (girada) {
+            int temp = valor1;
+            valor1 = valor2;
+            valor2 = temp;
+        }
+        this.girada = girada;
     }
+
 }
