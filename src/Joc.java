@@ -106,13 +106,15 @@ public class Joc {
 
         Peses primera = tablero.get(0);
 
-        if (p.getValor1() == primera.getValor1()) {
-                return 1;
-                } else if (p.getValor2() == primera.getValor1()) {
-                return 2;
+        if (p.getValor2() == primera.getValor1()) {
+            return 1;
+        } else if (p.getValor1() == primera.getValor1()) {
+            return 2;
         }
+
         return 0;
     }
+
 
     private int esPesaValidaD(Peses p) {
         if (tablero.isEmpty()) {
