@@ -5,12 +5,11 @@ import java.util.Scanner;
 
 public class Joc {
 
-    private ArrayList<Peses> totalPeses = new ArrayList<>();
-    private ArrayList<Peses> tablero = new ArrayList<>();
+    protected ArrayList<Peses> totalPeses = new ArrayList<>();
+    protected ArrayList<Peses> tablero = new ArrayList<>();
     private Scanner sc = new Scanner(System.in);
     protected Sortides sort = new Sortides();
-    private ArrayList<jugador> listaJugadors = new ArrayList<>();
-    private ArrayList<jugador> lisytaGrups = new ArrayList<>();
+    protected ArrayList<jugador> listaJugadors = new ArrayList<>();
     ArrayList<jugador> torns = new ArrayList<>();
     private final int PUNTAJE_OBJETIVO = 100;
     public Joc(){
