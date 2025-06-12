@@ -12,6 +12,7 @@ public class Joc {
     private ArrayList<jugador> listaJugadors = new ArrayList<>();
     private ArrayList<jugador> lisytaGrups = new ArrayList<>();
     ArrayList<jugador> torns = new ArrayList<>();
+    private final int PUNTAJE_OBJETIVO = 100;
     public Joc(){
     }
     public void start(){
@@ -76,20 +77,19 @@ public class Joc {
         System.out.println(totalPeses);
     }
 
-    public void generarMans(){
-
-        for (int i = 0; i < listaJugadors.size(); i++) {
-            jugador jugadorActual = listaJugadors.get(i);
-            for (int y = 0; y < 7 ; y++){
+    public void generarMans() {
+        for (jugador jugadorActual : listaJugadors) {
+            for (int y = 0; y < 7; y++) {
                 Random r = new Random();
                 int lon = totalPeses.size();
                 int rPosicio = r.nextInt(lon);
                 Peses pesaActual = totalPeses.get(rPosicio);
-                jugadorActual.setMano(pesaActual);
+                jugadorActual.setMano(pesaActual);  // Usa un método que añada ficha, no que reemplace
                 totalPeses.remove(rPosicio);
             }
         }
     }
+
 
     private void cDerrere(Peses p) {
         int valid = esPesaValidaD(p);
@@ -171,7 +171,7 @@ public class Joc {
                 generarPeses();         // ← Crea todas las fichas
                 generarJugadors();      // ← Crea los jugadores
                 generarMans();          // ← Reparte fichas aleatoriamente a los jugadores
-                iniciarPartida();
+                jugarVariasPartidas();
                 break;
             case "2":
                 sort.imprimirTexte("Has elejit Domino Mexicà are començarem el joc");
@@ -259,8 +259,9 @@ public class Joc {
 
         return indexJugador;
     }
-    public void jugar() {
+    public jugador jugar() {
         boolean jocAcabat = false;
+        jugador ganador = null;
 
         while (!jocAcabat) {
             for (jugador j : torns) {
@@ -327,9 +328,78 @@ public class Joc {
                 if (j.getMano().isEmpty()) {
                     System.out.println("\n🏆 El jugador " + j.getNombre() + " ha guanyat!");
                     jocAcabat = true;
+                    ganador = j;
                     break;
                 }
             }
         }
+
+        return ganador;
     }
+
+    // En la clase Joc, añade un método para jugar múltiples partidas con puntuación acumulativa
+
+    public void jugarVariasPartidas() {
+        boolean hayGanador = false;
+
+        // Resetear puntuaciones antes de empezar la serie
+        resetearPuntuaciones();
+
+        while (!hayGanador) {
+            // Preparar nueva partida
+            totalPeses.clear();
+            tablero.clear();
+            for (jugador j : listaJugadors) {
+                j.getMano().clear();  // Asegúrate que getMano() devuelve lista real
+            }
+            generarPeses();
+            generarMans();
+
+            iniciarPartida();
+            jugar();
+
+            jugador ganador = null;
+            for (jugador j : listaJugadors) {
+                if (j.getMano().isEmpty()) {
+                    ganador = j;
+                    break;
+                }
+            }
+
+            if (ganador != null) {
+                int puntosSumados = 0;
+                for (jugador j : listaJugadors) {
+                    if (j != ganador) {
+                        int puntos = j.puntosEnMano();
+                        puntosSumados += puntos;
+                    }
+                }
+                ganador.sumarPuntuacion(puntosSumados);
+
+                System.out.println("\n🏆 " + ganador.getNombre() + " gana esta partida y suma " + puntosSumados + " puntos.");
+                System.out.println("Puntuaciones acumuladas:");
+                for (jugador j : listaJugadors) {
+                    System.out.println(j.getNombre() + ": " + j.getPuntuacion() + " puntos.");
+                    if (j.getPuntuacion() >= PUNTAJE_OBJETIVO) {
+                        hayGanador = true;
+                    }
+                }
+            }
+
+            if (hayGanador) {
+                System.out.println("\n🎉 " + ganador.getNombre() + " ha alcanzado " + PUNTAJE_OBJETIVO + " puntos y es el ganador final!");
+            } else {
+                System.out.println("\n--- Nueva partida comenzará ---\n");
+            }
+        }
+    }
+
+    public void resetearPuntuaciones() {
+        for (jugador j : listaJugadors) {
+            j.setPuntuacion(0);
+        }
+    }
+
+
+
 }
