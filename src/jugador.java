@@ -31,4 +31,8 @@ public class jugador {
     public ArrayList<Peses> getMano(){
         return mano;
     }
+
+    public void removePesa(Peses p) {
+        this.mano.remove(p);
+    }
 }

@@ -14,9 +14,39 @@ public class Joc {
     ArrayList<jugador> torns = new ArrayList<>();
     public Joc(){
     }
-    public  void start(){
-        sort.imprimirTexte("hola");
+    public void start(){
+
     }
+    public void iniciarPartida() {
+        int primer = cercarJugadorambMajorDoblePessa();
+
+        if (primer != -1) {
+            jugador jugadorInicial = listaJugadors.get(primer);
+
+            // Buscar el doble más alto y colocarlo
+            ArrayList<Peses> mano = jugadorInicial.getMano();
+            for (Peses p : mano) {
+                if (p.getValor1() == p.getValor2()) {
+                    tablero.add(p); // colocar al centro
+                    jugadorInicial.removePesa(p);
+                    System.out.println(jugadorInicial.getNombre() + " comença i col·loca automàticament el " + p);
+                    break;
+                }
+            }
+
+            // Generar el orden de turnos (jugador que inició va al final)
+            torns(); // ya coloca el jugador con doble primero
+
+            // Mover el jugador que colocó la ficha al final de la lista de turnos
+            jugador iniciador = torns.remove(0);
+            torns.add(iniciador);
+        }
+
+        // Empieza la partida
+        jugar();
+    }
+
+
 
     public void generarPeses(){
         for (int i = 0; i <= 6; i++){
@@ -45,22 +75,27 @@ public class Joc {
         }
     }
 
-    private void cDerrere(Peses p){
-        if (esPesaValidaD(p) == 1) {
-        tablero.add( 0 ,p); } else if (esPesaValidaD(p) == 2) {
-            tablero.add( 0 ,p.setGirada(true));
-        } else if (esPesaValidaD(p) == 0) {
-            new InvalidPosicion("La Fitca no es pot colocar alla ");
+    private void cDerrere(Peses p) {
+        int valid = esPesaValidaD(p);
+        if (valid == 1) {
+            tablero.add(p);
+        } else if (valid == 2) {
+            p.setGirada(true);
+            tablero.add(p);
+        } else {
+            System.out.println("La fitxa no es pot col·locar al final.");
         }
     }
 
-
-    private void cDevant(Peses p){
-        if (esPesaValidaE(p) == 1) {
-            tablero.add(p); } else if (esPesaValidaE(p) == 2) {
-            tablero.add(p.setGirada(true));
-        } else if (esPesaValidaE(p) == 0) {
-            new InvalidPosicion("La Fitca no es pot colocar alla ");
+    private void cDevant(Peses p) {
+        int valid = esPesaValidaE(p);
+        if (valid == 1) {
+            tablero.add(0, p);
+        } else if (valid == 2) {
+            p.setGirada(true);
+            tablero.add(0, p);
+        } else {
+            System.out.println("La fitxa no es pot col·locar al davant.");
         }
     }
 
@@ -119,6 +154,7 @@ public class Joc {
                 }
                     generarMans();
                 torns();
+                iniciarPartida();
                 break;
             case "2":
                 sort.imprimirTexte("Has elejit Domino Mexicà are començarem el joc");
@@ -201,10 +237,10 @@ public class Joc {
             torns.add(j);
         }
 
-        // Mostrar el orden de turnos
-        for (jugador jugador : torns) {
-            jugador.mostrar();
-        }
+//        // Mostrar el orden de turnos
+//        for (jugador jugador : torns) {
+//            jugador.mostrar();
+//        }
     }
 
 
@@ -224,6 +260,62 @@ public class Joc {
         }
 
         return indexJugador;
+    }
+    public void jugar() {
+        boolean jocAcabat = false;
+
+        while (!jocAcabat) {
+            for (jugador j : torns) {
+                System.out.println("\nTorn de: " + j.getNombre());
+                System.out.println("Tauler: " + tablero);
+                j.mostrar();
+
+                boolean haJugat = false;
+
+                System.out.println("Escriu l'índex de la peça que vols jugar:");
+                int index = sc.nextInt();
+                sc.nextLine();
+
+                if (index < j.getMano().size()) {
+                    Peses p = j.getMano().get(index);
+                    int pot = esPotColocar(p);
+
+                    if (pot == 1 || pot == 2) {
+                        if (esPesaValidaD(p) > 0) {
+                            cDerrere(p);
+                        } else {
+                            cDevant(p);
+                        }
+                        j.removePesa(p);
+                        haJugat = true;
+                        System.out.println(j.getNombre() + " ha col·locat: " + p);
+                    }
+                }
+
+                // Si no ha pogut jugar
+                while (!haJugat) {
+                    if (totalPeses.isEmpty()) {
+                        System.out.println("No hi ha fitxes per robar. " + j.getNombre() + " passa.");
+                        break;
+                    } else {
+                        System.out.println(j.getNombre() + " roba una fitxa.");
+                        Peses nova = totalPeses.remove(0);
+                        j.setMano(nova);
+
+                        // Torn s'acaba després de robar
+                        System.out.println(j.getNombre() + " ha robat: " + nova + ". No pot jugar-la aquest torn.");
+                        break;
+                    }
+                }
+
+                // Verifica si el jugador ha ganado
+                if (j.getMano().isEmpty()) {
+                    System.out.println("\n🏆 El jugador " + j.getNombre() + " ha guanyat!");
+                    jocAcabat = true;
+                    break;
+                }
+            }
+        }
     }
 
 
