@@ -7,7 +7,7 @@ public class Joc {
 
     protected ArrayList<Peses> totalPeses = new ArrayList<>();
     protected ArrayList<Peses> tablero = new ArrayList<>();
-    private Scanner sc = new Scanner(System.in);
+    protected Scanner sc = new Scanner(System.in);
     protected Sortides sort = new Sortides();
     protected ArrayList<jugador> listaJugadors = new ArrayList<>();
     ArrayList<jugador> torns = new ArrayList<>();
@@ -87,7 +87,7 @@ public class Joc {
     }
 
 
-    private void cDerrere(Peses p) {
+    protected void cDerrere(Peses p) {
         int valid = esPesaValidaD(p);
         if (valid == 1) {
             tablero.add(p);
@@ -99,7 +99,7 @@ public class Joc {
         }
     }
 
-    private void cDevant(Peses p) {
+    protected void cDevant(Peses p) {
         int valid = esPesaValidaE(p);
         if (valid == 1) {
             tablero.add(0, p);
@@ -111,7 +111,7 @@ public class Joc {
         }
     }
 
-    private int esPesaValidaE(Peses p) {
+    protected int esPesaValidaE(Peses p) {
         if (tablero.isEmpty()) {
             return 1;
         }
@@ -128,7 +128,7 @@ public class Joc {
     }
 
 
-    private int esPesaValidaD(Peses p) {
+    protected int esPesaValidaD(Peses p) {
         if (tablero.isEmpty()) {
             return 1;
         }
@@ -143,7 +143,7 @@ public class Joc {
         return 0;
     }
 
-    private int esPotColocar(Peses p) {
+    protected int esPotColocar(Peses p) {
         if (tablero.isEmpty()) {
             return 0;
         }
@@ -218,7 +218,7 @@ public class Joc {
     }
 
 
-    private int cercarJugadorambMajorDoblePessa() {
+    protected int cercarJugadorambMajorDoblePessa() {
         int valorMaxTrobat = -1;
         int indexJugador = -1;
 
