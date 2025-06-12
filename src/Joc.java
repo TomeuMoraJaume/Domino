@@ -25,7 +25,7 @@ public class Joc {
             jugador jugadorInicial = listaJugadors.get(primer);
             ArrayList<Peses> mano = jugadorInicial.getMano();
 
-            // Buscar el doble más alto en su mano
+
             Peses millorDoble = null;
             for (Peses p : mano) {
                 if (p.getValor1() == p.getValor2()) {
@@ -35,30 +35,28 @@ public class Joc {
                 }
             }
 
-            // Colocar la ficha en el tablero y quitarla de la mano
+
             if (millorDoble != null) {
                 tablero.add(millorDoble);
                 jugadorInicial.removePesa(millorDoble);
                 System.out.println(jugadorInicial.getNombre() + " comença i col·loca automàticament el " + millorDoble);
             }
 
-            // Generar orden de turnos (jugador que inició va primero, pero no vuelve a jugar inmediatamente)
+
             torns.clear();
             for (int i = 0; i < listaJugadors.size(); i++) {
                 torns.add(listaJugadors.get(i));
             }
 
-            // Rotar turnos: el siguiente al jugador inicial empieza
+
             while (!torns.get(0).equals(jugadorInicial)) {
                 jugador j = torns.remove(0);
                 torns.add(j);
             }
-            torns.remove(0); // eliminar al jugador que ya jugó
-            torns.add(jugadorInicial); // añadirlo al final del turno
+            torns.remove(0);
+            torns.add(jugadorInicial);
         }
 
-        // Empieza la partida
-        jugar();
     }
 
 
@@ -84,8 +82,7 @@ public class Joc {
                 int lon = totalPeses.size();
                 int rPosicio = r.nextInt(lon);
                 Peses pesaActual = totalPeses.get(rPosicio);
-                jugadorActual.setMano(pesaActual);  // Usa un método que añada ficha, no que reemplace
-                totalPeses.remove(rPosicio);
+                jugadorActual.setMano(pesaActual);
             }
         }
     }
@@ -149,16 +146,16 @@ public class Joc {
 
     private int esPotColocar(Peses p) {
         if (tablero.isEmpty()) {
-            return 0; // se puede colocar en cualquier lado
+            return 0;
         }
 
         int dreta = esPesaValidaD(p);
         int esquerra = esPesaValidaE(p);
 
-        if (dreta > 0 && esquerra > 0) return 3; // se puede colocar en ambos
-        else if (dreta > 0) return 1; // derecha
-        else if (esquerra > 0) return 2; // izquierda
-        return 0; // no se puede colocar
+        if (dreta > 0 && esquerra > 0) return 3;
+        else if (dreta > 0) return 1;
+        else if (esquerra > 0) return 2;
+        return 0;
     }
 
 
@@ -167,10 +164,7 @@ public class Joc {
     sort.imprimirTexte(" 1. Domino Standart \n 2. Domino Mexicà \n 3. Domino Llatí \n 4. Domino Colombiá \n 5. Domino Xilè \n 6. Domino Veneçolà \n 7. Domino Ponce");
         switch (sc.nextLine()){
             case "1":
-                start();                // ← Inicializa estructuras (aún vacío)
-                generarPeses();         // ← Crea todas las fichas
-                generarJugadors();      // ← Crea los jugadores
-                generarMans();          // ← Reparte fichas aleatoriamente a los jugadores
+                generarJugadors();
                 jugarVariasPartidas();
                 break;
             case "2":
@@ -310,7 +304,7 @@ public class Joc {
                     }
                 }
 
-                // Si no ha pogut jugar
+
                 while (!haJugat) {
                     if (totalPeses.isEmpty()) {
                         System.out.println("No hi ha fitxes per robar. " + j.getNombre() + " passa.");
@@ -324,7 +318,7 @@ public class Joc {
                     }
                 }
 
-                // Verifica si el jugador ha guanyat
+
                 if (j.getMano().isEmpty()) {
                     System.out.println("\n🏆 El jugador " + j.getNombre() + " ha guanyat!");
                     jocAcabat = true;
@@ -337,27 +331,25 @@ public class Joc {
         return ganador;
     }
 
-    // En la clase Joc, añade un método para jugar múltiples partidas con puntuación acumulativa
+
 
     public void jugarVariasPartidas() {
         boolean hayGanador = false;
 
-        // Resetear puntuaciones antes de empezar la serie
+
         resetearPuntuaciones();
 
         while (!hayGanador) {
-            // Preparar nueva partida
+
             totalPeses.clear();
             tablero.clear();
             for (jugador j : listaJugadors) {
-                j.getMano().clear();  // Asegúrate que getMano() devuelve lista real
+                j.getMano().clear();
             }
             generarPeses();
             generarMans();
-
             iniciarPartida();
             jugar();
-
             jugador ganador = null;
             for (jugador j : listaJugadors) {
                 if (j.getMano().isEmpty()) {
