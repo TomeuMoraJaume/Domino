@@ -11,6 +11,7 @@ public class Joc {
     protected Sortides sort = new Sortides();
     private ArrayList<jugador> listaJugadors = new ArrayList<>();
     private ArrayList<jugador> lisytaGrups = new ArrayList<>();
+    ArrayList<jugador> torns = new ArrayList<>();
     public Joc(){
     }
     public  void start(){
@@ -41,13 +42,6 @@ public class Joc {
                 jugadorActual.setMano(pesaActual);
                 totalPeses.remove(rPosicio);
             }
-        }
-    }
-
-
-    public void imprimirPersones(){
-        for (int i = 0; i < listaJugadors.size(); i++) {
-            listaJugadors.get(i).mostrar();
         }
     }
 
@@ -124,7 +118,7 @@ public class Joc {
                     System.out.println(listaJugadors.get(i).getNombre());
                 }
                     generarMans();
-                imprimirPersones();
+                torns();
                 break;
             case "2":
                 sort.imprimirTexte("Has elejit Domino Mexicà are començarem el joc");
@@ -178,11 +172,13 @@ public class Joc {
     }
 
     public void generarParelles(){
-        sort.imprimirTexte("Cuants de grups sareu");
+        sort.imprimirTexte("Cuants de grups sareu (Maxim 2 ):");
         int grups = sc.nextInt();
-        if (listaJugadors.size()/grups !=0 ) {
+        sc.nextLine();
+        if (grups > 2 ){
+            System.out.println("Per Respectar les normes nomes podeu ser 2 grups");
+        } else if (listaJugadors.size()/grups !=0 ) {
             sort.imprimirTexte("Imposible generar aquest numero de grups , tens menys participants dels que necesites per formar  " + grups + " grups. ");
-
         } else {
             for (int i = 0; i < listaJugadors.size(); i++) {
                 Random r = new Random(listaJugadors.size());
@@ -192,13 +188,43 @@ public class Joc {
         }
     }
 
-    public void torns(){
-        boolean acabat = false;
-        while (!acabat) {
+    public void torns() {
+        int pesadoblle6 = cercarJugadorambMajorDoblePessa(); // índice del jugador con el doble más alto
+        if (pesadoblle6 != -1) {
+            // Añadir primero el jugador con el doble más alto
+            torns.add(listaJugadors.get(pesadoblle6));
+            listaJugadors.remove(pesadoblle6);
+        }
 
+        // Añadir el resto de jugadores en el orden que quedaron
+        for (jugador j : listaJugadors) {
+            torns.add(j);
+        }
 
-
+        // Mostrar el orden de turnos
+        for (jugador jugador : torns) {
+            jugador.mostrar();
         }
     }
+
+
+    private int cercarJugadorambMajorDoblePessa() {
+        int valorMaxTrobat = -1;
+        int indexJugador = -1;
+
+        for (int i = 0; i < listaJugadors.size(); i++) {
+            jugador jActual = listaJugadors.get(i);
+            ArrayList<Peses> manoJA = jActual.getMano();
+            for (Peses p : manoJA) {
+                if (p.getValor1() == p.getValor2() && p.getValor1() > valorMaxTrobat) {
+                    valorMaxTrobat = p.getValor1();
+                    indexJugador = i;
+                }
+            }
+        }
+
+        return indexJugador;
+    }
+
 
 }
