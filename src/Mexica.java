@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class Mexica extends Joc{
 
     public Mexica(){

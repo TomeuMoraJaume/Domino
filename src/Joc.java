@@ -218,23 +218,6 @@ public class Joc {
         }}
     }
 
-    public void generarParelles(){
-        sort.imprimirTexte("Cuants de grups sareu (Maxim 2 ):");
-        int grups = sc.nextInt();
-        sc.nextLine();
-        if (grups > 2 ){
-            System.out.println("Per Respectar les normes nomes podeu ser 2 grups");
-        } else if (listaJugadors.size()/grups !=0 ) {
-            sort.imprimirTexte("Imposible generar aquest numero de grups , tens menys participants dels que necesites per formar  " + grups + " grups. ");
-        } else {
-            for (int i = 0; i < listaJugadors.size(); i++) {
-                Random r = new Random(listaJugadors.size());
-                lisytaGrups.add(listaJugadors.get(i));
-                listaJugadors.remove(i);
-            }
-        }
-    }
-
 
     private int cercarJugadorambMajorDoblePessa() {
         int valorMaxTrobat = -1;
