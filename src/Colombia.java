@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 public class Colombia extends Joc{
 
         private jugador equipo1Jugador1, equipo1Jugador2;

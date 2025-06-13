@@ -1,7 +1,4 @@
-import Exceptions.InvalidPosicion;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class Joc {
 

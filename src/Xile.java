@@ -1,5 +1,6 @@
 public class Xile extends Joc {
 
+
     private boolean jugarConSacar = true; // true = se puede sacar, false = solo pasar
 
     public Xile() {

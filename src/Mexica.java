@@ -2,6 +2,7 @@ import java.util.*;
 
 public class Mexica extends Joc {
 
+
     private ArrayList<ArrayList<jugador>> parejas = new ArrayList<>();
     private final int PUNTAJE_OBJETIVO = 200;
 

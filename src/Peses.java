@@ -2,8 +2,6 @@ public class Peses {
 
     private int valor1;
     private int valor2;
-    private boolean adalt = true;
-    private boolean abaix = true;
     private boolean girada = false;
 
     public Peses(int valor1, int valor2) {

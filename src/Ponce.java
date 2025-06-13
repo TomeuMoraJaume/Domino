@@ -1,5 +1,6 @@
 import java.util.*;
 
+
 public class Ponce extends Joc {
 
     private final int PUNTAJE_OBJETIVO_PONCE = 20;

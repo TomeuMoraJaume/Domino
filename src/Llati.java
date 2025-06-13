@@ -1,6 +1,5 @@
 import java.util.*;
 
-
 public class Llati extends Joc {
 
     private final int PUNTAJE_OBJETIVO = 100;

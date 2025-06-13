@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.*;
 
 public class jugador {
     private ArrayList<Peses> mano = new ArrayList<>();
