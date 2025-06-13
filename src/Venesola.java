@@ -6,7 +6,7 @@ public class Venesola extends Joc {
 
     private ArrayList<ArrayList<jugador>> parejas = new ArrayList<>();
 
-    private jugador jugadorSalidaAnterior = null;
+    private int jugadorSalidaAnterior = -1;
 
     public Venesola() {
         super();
@@ -27,17 +27,17 @@ public class Venesola extends Joc {
             resetearManosYTablero();
             repartirFichas();
 
-            jugador jugadorInicio = encontrarJugadorConDobleSeis();
-            if (jugadorInicio == null) {
+            int jugadorInicio = encontrarJugadorConDobleSeis();
+            if (jugadorInicio == -1) {
                 System.out.println("Error: No se encontró el doble seis. Reiniciando reparto...");
                 continue;
             }
 
             jugadorSalidaAnterior = jugadorInicio;
-            System.out.println("El jugador que inicia es: " + jugadorInicio.getNombre() + " (tiene el doble seis)");
+            System.out.println("El jugador que inicia es: " + listaJugadors.get(jugadorInicio).getNombre() + " (tiene el doble seis)");
 
             prepararTurnos(jugadorInicio);
-
+            tablero.add(cercar6(jugadorInicio));
 
             jugarRonda();
 
@@ -85,22 +85,22 @@ public class Venesola extends Joc {
         generarMans();
     }
 
-    private jugador encontrarJugadorConDobleSeis() {
-        for (jugador j : listaJugadors) {
-            for (Peses p : j.getMano()) {
+    private int encontrarJugadorConDobleSeis() {
+        for (jugador i : listaJugadors) {
+            for (Peses p : i.getMano()) {
                 if (p.getValor1() == 6 && p.getValor2() == 6) {
-                    return j;
+                    int idJugador = listaJugadors.indexOf(i);
+                    return idJugador;
                 }
             }
         }
-        return null;
+        return -1;
     }
 
-    private void prepararTurnos(jugador jugadorInicio) {
+    private void prepararTurnos(int jugadorInicio) {
         torns.clear();
-        int inicioIndex = listaJugadors.indexOf(jugadorInicio);
         for (int i = 0; i < listaJugadors.size(); i++) {
-            int idx = (inicioIndex + i) % listaJugadors.size();
+            int idx = (jugadorInicio + i) % listaJugadors.size();
             torns.add(listaJugadors.get(idx));
         }
     }
@@ -119,7 +119,7 @@ public class Venesola extends Joc {
                 ArrayList<Peses> fichasJugables = getFichasJugables(j);
                 if (fichasJugables.isEmpty()) {
                     System.out.println(j.getNombre() + " no puede jugar, pasa.");
-                    continue; // Pasa el turno
+                    continue;
                 }
 
                 int indiceFicha = -1;
@@ -238,9 +238,18 @@ public class Venesola extends Joc {
         }
     }
 
-    private jugador jugadorALaDerecha(jugador j) {
-        int idx = listaJugadors.indexOf(j);
-        int idxDerecha = (idx - 1 + listaJugadors.size()) % listaJugadors.size();
-        return listaJugadors.get(idxDerecha);
+    private int jugadorALaDerecha(int j) {
+        int idxDerecha = (j - 1 + listaJugadors.size()) % listaJugadors.size();
+        return listaJugadors.indexOf(idxDerecha);
+    }
+
+    private Peses cercar6(int jInici){
+        ArrayList<Peses> mano = listaJugadors.get(jInici).getMano();
+        for (int i = 0; i < mano.size(); i++) {
+            if (mano.get(i).getValor1() == 6 && mano.get(i).getValor2() == 6) {
+                return mano.get(i);
+            }
+        }
+        return null;
     }
 }

@@ -67,10 +67,6 @@ public class Joc {
         }
     }
 
-    public void imprimirTablero(){
-        System.out.println(totalPeses);
-    }
-
     public void generarMans() {
         for (jugador jugadorActual : listaJugadors) {
             for (int y = 0; y < 7; y++) {

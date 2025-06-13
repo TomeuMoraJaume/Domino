@@ -5,6 +5,6 @@ public class Main {
         Joc joc = new Joc();
         joc.startJoc();
     }
-
+    
 
 }
