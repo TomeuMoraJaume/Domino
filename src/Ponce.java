@@ -20,7 +20,7 @@ public class Ponce extends Joc {
 
     @Override
     public void start() {
-
+        generarJugadors();
         if (listaJugadors.size() != 4) {
             System.out.println("Dominó Ponce requiere exactamente 4 jugadores.");
             return;

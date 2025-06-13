@@ -1,7 +1,9 @@
+import java.util.*;
+
+
 public class Llati extends Joc {
 
-    private final int PUNTAJE_OBJETIVO = 100; // puedes ajustar a 200 si prefieres
-    private final int PUNTOS_PASO_CORRIDO = 25; // si deseas usarlo más adelante
+    private final int PUNTAJE_OBJETIVO = 100;
 
     public Llati() {
         super();
@@ -9,26 +11,54 @@ public class Llati extends Joc {
 
     @Override
     public void start() {
-        super.start();
-        iniciarPartida();
-        determinarJugadorSalida();
+        generarJugadors();      // Paso 1: crear jugadores
+        jugarVariasPartidas();  // Paso 2: iniciar bucle de juego
     }
 
+    @Override
+    public void generarMans() {
+        boolean repartirDeNou;
+        do {
+            totalPeses.clear();
+            generarPeses();
 
-    private void determinarJugadorSalida() {
-        Peses seisDoble = new Peses(6, 6);
-        for (jugador j : listaJugadors) {
-            if (j.getMano().contains(seisDoble)) {
-                while (!torns.get(0).equals(j)) {
-                    jugador first = torns.remove(0);
-                    torns.add(first);
-                }
-                System.out.println("Jugador que inicia: " + j.getNombre());
-                return;
+            for (jugador jugadorActual : listaJugadors) {
+                jugadorActual.getMano().clear();
             }
-        }
-        System.out.println("Nadie tiene seis doble, turno normal.");
+
+            ArrayList<Peses> copiaPeses = new ArrayList<>(totalPeses);
+            Random r = new Random();
+
+            for (jugador jugadorActual : listaJugadors) {
+                for (int y = 0; y < 7; y++) {
+                    int rPosicio = r.nextInt(copiaPeses.size());
+                    Peses pesaActual = copiaPeses.remove(rPosicio);
+                    jugadorActual.setMano(pesaActual);
+                }
+            }
+
+            boolean hayDobleSeis = false;
+            for (jugador j : listaJugadors) {
+                for (Peses p : j.getMano()) {
+                    if (p.getValor1() == 6 && p.getValor2() == 6) {
+                        hayDobleSeis = true;
+                        break;
+                    }
+                }
+                if (hayDobleSeis) break;
+            }
+
+            if (!hayDobleSeis) {
+                sort.imprimirTexte("Cap jugador té el 6|6. Vols repartir de nou? (s/n):");
+                String resposta = sc.nextLine();
+                repartirDeNou = resposta.equalsIgnoreCase("s");
+            } else {
+                repartirDeNou = false;
+            }
+
+        } while (repartirDeNou);
     }
+
 
 
 

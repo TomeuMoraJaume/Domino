@@ -184,11 +184,11 @@ public class Joc {
                 break;
             case "6":
                 sort.imprimirTexte("Has elejit Domino Veneçolà are començarem el joc");
-                new Venesola();
+                new Venesola().start();
                 break;
             case "7":
                 sort.imprimirTexte("Has elejit Domino Ponce are començarem el joc");
-                new Ponce();
+                new Ponce().start();
                 break;
             default:
                 sort.imprimirTexte("Has elejit Un valor no valid");
@@ -198,10 +198,10 @@ public class Joc {
 
 
     public void generarJugadors(){
-        sort.imprimirTexte("Inseresqui cuants de Jugadors sereu (Maxim 4): ");
+        sort.imprimirTexte("Inseresqui cuants de Jugadors sereu (4): ");
         int jugadors = sc.nextInt();
         sc.nextLine();
-        if (jugadors > 4 ){
+        if (jugadors < 4 ){
             System.out.println("Per Respectar les normes del joc nomes podeu jugar 4 persones");
 
         } else {
