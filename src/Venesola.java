@@ -2,12 +2,10 @@ import java.util.ArrayList;
 
 public class Venesola extends Joc {
 
-    private final int PUNTAJE_OBJETIVO = 75; // o 100 según quieras configurar
+    private final int PUNTAJE_OBJETIVO = 75;
 
-    // Parejas: 0 y 2, 1 y 3
     private ArrayList<ArrayList<jugador>> parejas = new ArrayList<>();
 
-    // Para saber quién salió en la ronda anterior
     private jugador jugadorSalidaAnterior = null;
 
     public Venesola() {
@@ -38,19 +36,17 @@ public class Venesola extends Joc {
             jugadorSalidaAnterior = jugadorInicio;
             System.out.println("El jugador que inicia es: " + jugadorInicio.getNombre() + " (tiene el doble seis)");
 
-            // Rotar la lista de turnos para que empiece el jugador que tiene el doble seis
             prepararTurnos(jugadorInicio);
 
-            // Aquí lanzamos la partida
+
             jugarRonda();
 
-            // Calculamos la puntuación
+
             int parejaGanadoraIndex = evaluarGanadorYPuntuacion();
 
-            // Mostrar puntuaciones acumuladas
+
             mostrarPuntuaciones();
 
-            // Verificamos si alguna pareja llegó a la meta
             if (parejas.get(parejaGanadoraIndex).get(0).getPuntuacion() >= PUNTAJE_OBJETIVO) {
                 System.out.println("🎉 La pareja ganadora es: " +
                         parejas.get(parejaGanadoraIndex).get(0).getNombre() + " y " +
@@ -59,7 +55,6 @@ public class Venesola extends Joc {
                 juegoTerminado = true;
             } else {
                 System.out.println("\n--- Nueva ronda comenzará. Sale a la derecha del último salidor ---\n");
-                // Para la siguiente ronda, el jugador que inicia es el de la derecha
                 jugadorSalidaAnterior = jugadorALaDerecha(jugadorSalidaAnterior);
             }
         }
@@ -103,7 +98,6 @@ public class Venesola extends Joc {
 
     private void prepararTurnos(jugador jugadorInicio) {
         torns.clear();
-        // Empezar desde jugadorInicio y continuar en orden (listaJugadors es fija)
         int inicioIndex = listaJugadors.indexOf(jugadorInicio);
         for (int i = 0; i < listaJugadors.size(); i++) {
             int idx = (inicioIndex + i) % listaJugadors.size();
@@ -128,7 +122,6 @@ public class Venesola extends Joc {
                     continue; // Pasa el turno
                 }
 
-                // Para simplicidad, dejamos que el jugador elija ficha a jugar con input
                 int indiceFicha = -1;
                 do {
                     System.out.println("Elige índice de ficha para jugar (o -1 para pasar): ");
@@ -192,9 +185,7 @@ public class Venesola extends Joc {
         return jugables;
     }
 
-    // Retorna índice de pareja ganadora tras la ronda y actualiza puntos
     private int evaluarGanadorYPuntuacion() {
-        // Sumar puntos no jugados por cada pareja
         int puntosPareja1 = parejas.get(0).get(0).puntosEnMano() + parejas.get(0).get(1).puntosEnMano();
         int puntosPareja2 = parejas.get(1).get(0).puntosEnMano() + parejas.get(1).get(1).puntosEnMano();
 
@@ -221,7 +212,7 @@ public class Venesola extends Joc {
             } else {
                 // Empate, nadie suma puntos
                 System.out.println("Empate en la tranca, nadie suma puntos esta ronda.");
-                return 0; // Retornamos 0 para seguir juego, ningún puntaje sumado
+                return 0;
             }
         }
 

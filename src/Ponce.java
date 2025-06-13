@@ -12,9 +12,6 @@ public class Ponce extends Joc {
     private ArrayList<jugador> equipoA = new ArrayList<>();
     private ArrayList<jugador> equipoB = new ArrayList<>();
 
-    // Para controlar el orden del turno según rotación anti-horaria (a la derecha)
-    // En Ponce el orden gira en contra de las manecillas del reloj (a la derecha)
-    // Esto significa que el siguiente jugador es (actual -1 + n) % n
     private ArrayList<jugador> ordenTurnos = new ArrayList<>();
 
     public Ponce() {
@@ -23,13 +20,12 @@ public class Ponce extends Joc {
 
     @Override
     public void start() {
-        // Preparamos equipos (suponemos 4 jugadores)
+
         if (listaJugadors.size() != 4) {
             System.out.println("Dominó Ponce requiere exactamente 4 jugadores.");
             return;
         }
 
-        // Asignamos equipos: Jugadores 0 y 2 en equipo A, 1 y 3 en equipo B
         equipoA.clear();
         equipoB.clear();
         equipoA.add(listaJugadors.get(0));
@@ -37,7 +33,6 @@ public class Ponce extends Joc {
         equipoB.add(listaJugadors.get(1));
         equipoB.add(listaJugadors.get(3));
 
-        // Empezamos las partidas
         jugarVariasPartidas();
     }
 
@@ -54,7 +49,7 @@ public class Ponce extends Joc {
             totalPeses.clear();
             tablero.clear();
 
-            // Limpiar manos jugadores
+
             for (jugador j : listaJugadors) {
                 j.getMano().clear();
             }
@@ -62,18 +57,18 @@ public class Ponce extends Joc {
             generarPeses();
             generarMans();
 
-            // Si no es la primera mano, el jugador que empezó la anterior debe "fregar" (revolver fichas)
+
             if (indiceJugadorSalidaAnterior != -1) {
                 jugador fregador = listaJugadors.get(indiceJugadorSalidaAnterior);
                 System.out.println(fregador.getNombre() + " frega las fichas para la nueva mano.");
-                // Barajear las manos de todos mezclando sus fichas
+
                 ArrayList<Peses> todasFichas = new ArrayList<>();
                 for (jugador j : listaJugadors) {
                     todasFichas.addAll(j.getMano());
                     j.getMano().clear();
                 }
                 Collections.shuffle(todasFichas);
-                // Repartir las fichas de nuevo
+
                 int idx = 0;
                 for (Peses p : todasFichas) {
                     listaJugadors.get(idx % listaJugadors.size()).setMano(p);
@@ -86,7 +81,7 @@ public class Ponce extends Joc {
             jugador ganadorMano = jugarMano();
 
             if (ganadorMano != null) {
-                // Calcular puntos de la mano para equipos y sumar
+
                 int puntosManoA = calcularPuntosEquipo(equipoA);
                 int puntosManoB = calcularPuntosEquipo(equipoB);
 
@@ -97,7 +92,7 @@ public class Ponce extends Joc {
 
                 System.out.println("Puntajes acumulados - Equipo A: " + equipoAPuntos + " | Equipo B: " + equipoBPuntos);
 
-                // Revisar si algún equipo llegó al objetivo
+
                 if (equipoAPuntos >= PUNTAJE_OBJETIVO_PONCE) {
                     System.out.println("\n🎉 ¡Equipo A ha ganado el partido con " + equipoAPuntos + " puntos!");
                     partidoTerminado = true;
@@ -117,25 +112,24 @@ public class Ponce extends Joc {
 
     @Override
     public void iniciarPartida() {
-        // Determinar jugador que inicia la mano
+
 
         int jugadorSalida;
 
         if (indiceJugadorSalidaAnterior == -1) {
-            // Primera mano: jugador que tiene doble seis
+
             jugadorSalida = buscarJugadorDobleSeis();
             if (jugadorSalida == -1) {
                 System.out.println("Ningún jugador tiene el doble seis. Se elige jugador 0 para iniciar.");
                 jugadorSalida = 0;
             }
         } else {
-            // Manos siguientes: jugador a la derecha (rotación anti-horaria)
+
             jugadorSalida = (indiceJugadorSalidaAnterior - 1 + listaJugadors.size()) % listaJugadors.size();
         }
 
         indiceJugadorSalidaAnterior = jugadorSalida;
 
-        // Ordenar turnos rotando hacia la derecha (anti-horario)
         ordenTurnos.clear();
         for (int i = 0; i < listaJugadors.size(); i++) {
             ordenTurnos.add(listaJugadors.get((jugadorSalida - i + listaJugadors.size()) % listaJugadors.size()));
@@ -143,13 +137,13 @@ public class Ponce extends Joc {
 
         System.out.println("Comienza la mano el jugador: " + listaJugadors.get(jugadorSalida).getNombre());
 
-        // Poner la ficha de salida en el tablero
+
 
         jugador jugadorInicio = listaJugadors.get(jugadorSalida);
         Peses fichaSalida = null;
 
         if (indiceJugadorSalidaAnterior == jugadorSalida && primerPaseAnotado == false) {
-            // Primera mano, debe salir con doble seis
+
             for (Peses p : jugadorInicio.getMano()) {
                 if (p.getValor1() == 6 && p.getValor2() == 6) {
                     fichaSalida = p;
@@ -159,7 +153,7 @@ public class Ponce extends Joc {
         }
 
         if (fichaSalida == null) {
-            // No es la primera mano o no tiene doble seis (permite salir con cualquier ficha)
+
             fichaSalida = jugadorInicio.getMano().get(0);
         }
 
@@ -185,11 +179,10 @@ public class Ponce extends Joc {
         boolean manoFinalizada = false;
         jugador ganador = null;
 
-        // Controlar turnos usando ordenTurnos
+
         int indiceTurno = 0;
 
-        // Para controlar pases y puntos
-        // Guardamos quién pasó este turno para verificar pase gratis o no
+
         List<jugador> jugadoresPasados = new ArrayList<>();
 
         while (!manoFinalizada) {
@@ -202,7 +195,7 @@ public class Ponce extends Joc {
             boolean haJugado = false;
             boolean pasoJugador = false;
 
-            // Preguntar qué ficha quiere jugar (simulación o real input)
+
             int indexFicha = -1;
 
             do {
@@ -217,7 +210,7 @@ public class Ponce extends Joc {
                 }
 
                 if (indexFicha == -1) {
-                    // El jugador decide pasar
+
                     pasoJugador = true;
                     haJugado = true;
                 } else if (indexFicha >= 0 && indexFicha < jugadorActual.getMano().size()) {
@@ -251,13 +244,13 @@ public class Ponce extends Joc {
 
             } while (!haJugado);
 
-            // Controlar puntuación por pase
+
 
             if (pasoJugador) {
                 System.out.println(jugadorActual.getNombre() + " pasa.");
 
                 if (!jugadoresPasados.contains(jugadorActual)) {
-                    // Calculamos puntos por pase
+
                     int puntosPara = puntosPorPase(jugadorActual, jugadoresPasados);
                     if (puntosPara > 0) {
                         System.out.println("Se suman " + puntosPara + " puntos al equipo contrario.");
@@ -273,11 +266,11 @@ public class Ponce extends Joc {
                     jugadoresPasados.add(jugadorActual);
                 }
             } else {
-                // Si jugó ficha, resetear lista de pases para próximos turnos
+
                 jugadoresPasados.clear();
             }
 
-            // Comprobar si jugador actual ganó (no tiene fichas)
+
             if (jugadorActual.getMano().isEmpty()) {
                 System.out.println(jugadorActual.getNombre() + " ha ganado la mano!");
                 ganador = jugadorActual;
@@ -285,16 +278,14 @@ public class Ponce extends Joc {
                 break;
             }
 
-            // Comprobar tranque (ningún jugador puede poner ficha)
+
             if (esTranque()) {
                 System.out.println("¡Tranque detectado!");
-                // Lógica de tranque
                 manoFinalizada = true;
-                ganador = null; // No hay ganador en tranque
+                ganador = null;
                 break;
             }
 
-            // Pasar turno al siguiente jugador rotando a la derecha (anti-horario)
             indiceTurno = (indiceTurno + 1) % ordenTurnos.size();
         }
 
@@ -302,35 +293,24 @@ public class Ponce extends Joc {
     }
 
     private int puntosPorPase(jugador jugadorActual, List<jugador> jugadoresPasados) {
-        // Si es primer pase del partido vale 2 puntos
-        // Luego, 1 punto por pase
-        // Pase a compañero no vale puntos
-        // Pase triple (pase que hace que el mismo jugador juegue de nuevo): 2 puntos
-        // Aquí simplificado: si pasa un jugador y es la primera vez que pasa, suma 1 punto
-        // Si pasa compañero, no suma
 
-        // Detectar si el pase hace que el turno vuelva al mismo jugador: no implementado complejo
-        // Para ahora solo sumar 2 puntos en primer pase y 1 para demás pases no a compañeros
 
         if (!primerPaseAnotado) {
             return 2;
         }
 
-        // Si el pase hace que pase un compañero, no suma
         jugador compañero = obtenerCompanero(jugadorActual);
 
-        // El jugador al que le toca turno si pasa el jugador actual:
+
         int idxActual = ordenTurnos.indexOf(jugadorActual);
         int idxSiguiente = (idxActual + 1) % ordenTurnos.size();
         jugador siguiente = ordenTurnos.get(idxSiguiente);
 
         if (siguiente == compañero) {
-            // Pase "gratis"
+
             return 0;
         }
 
-        // Para pase triple (cuando turno vuelve al mismo jugador) se necesitaría lógica más compleja,
-        // para esta versión básica dejamos 1 punto.
 
         return 1;
     }
@@ -349,7 +329,6 @@ public class Ponce extends Joc {
     }
 
     private boolean esTranque() {
-        // Verificar si ningún jugador puede colocar ficha (simplificado)
 
         for (jugador j : listaJugadors) {
             for (Peses p : j.getMano()) {
@@ -362,7 +341,7 @@ public class Ponce extends Joc {
     }
 
     private int calcularPuntosEquipo(List<jugador> equipo) {
-        // Sumar puntos de las fichas que quedan en mano redondeando
+
         int totalPuntos = 0;
         for (jugador j : equipo) {
             int puntosJugador = 0;
@@ -372,13 +351,12 @@ public class Ponce extends Joc {
             totalPuntos += puntosJugador;
         }
 
-        // Aplicar redondeo según especificación
+
         return redondearPuntos(totalPuntos);
     }
 
     private int redondearPuntos(int puntos) {
-        // Por ejemplo, 6=1 punto, 15=1 punto, 16=2 puntos, 26=3 puntos, etc.
-        // Se redondea al decimal según: (puntos / 5)
+
         return puntos / 5;
     }
 

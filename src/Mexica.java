@@ -120,7 +120,6 @@ public class Mexica extends Joc {
                 System.out.println("Empate total, no se suman puntos.");
             }
 
-            // Verificar si hay ganador general
             hayGanador = listaJugadors.stream()
                     .anyMatch(j -> j.getPuntuacion() >= PUNTAJE_OBJETIVO);
 
